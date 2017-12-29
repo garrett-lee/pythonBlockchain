@@ -16,13 +16,11 @@ class Block:
 def getGenesisBlock():
     return Block(0, '0', '1496518102.896031', "My very first block :)", 0, '02d779570304667b4c28ba1dbfd4428844a7cab89023205c66858a40937557f8')
 
-#We can calculate the hash for a block providing all information
 def calculateHash(index, previousHash, timestamp, data, proof):
     value = str(index) + str(previousHash) + str(timestamp) + str(data) + str(proof)
     sha = hashlib.sha256(value.encode('utf-8'))
     return str(sha.hexdigest())
 
-#Makes it simpler to put a block in a function to calculate hash
 def calculateHashForBlock(block):
     return calculateHash(block.index, block.previousHash, block.timestamp, block.data, block.proof)
 
@@ -50,7 +48,6 @@ def writeBlockchain(blockchain):
 def readBlockchain(blockchainFilePath):
     importedBlockchain = []
     try:
-        
         with open(blockchainFilePath, 'r') as file:
             blockReader = csv.reader(file)
             for line in blockReader:
@@ -90,5 +87,7 @@ def mineNewBlock(difficulty = 5, blockchainPath = 'blockchain.csv'):
             proof += 1
     blockchain.append(newBlockAttempt)
     writeBlockchain(blockchain)
-    
-x = mineNewBlock()
+
+def mine(blocksToMine = 5):
+    for _ in range(blocksToMine):
+        mineNewBlock()
